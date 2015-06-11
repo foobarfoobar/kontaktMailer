@@ -1,4 +1,8 @@
 class ContactMessagesController < ApplicationController
+  # keine Authentifizierung fuer new, create
+  http_basic_authenticate_with :name => "admin", :password => "geheim", :except => [:new, :create]
+  
+  # fuellen der Daten in Anzeige
   before_action :set_contact_message, only: [:show, :edit, :update, :destroy]
 
   # GET /contact_messages
@@ -19,6 +23,7 @@ class ContactMessagesController < ApplicationController
 
   # GET /contact_messages/1/edit
   def edit
+    # @contact_message = ContactMessage.find(params[:id]) nicht noetig wegen before_action
   end
 
   # POST /contact_messages
@@ -37,12 +42,19 @@ class ContactMessagesController < ApplicationController
   # PATCH/PUT /contact_messages/1
   # PATCH/PUT /contact_messages/1.json
   def update
+    @contact_message = ContactMessage.find(params[:id])
+    if @contact_message.update_attributes(contact_message_params)
+      redirect_to root_url, notice: "Upgedated!"
+    else
+      render edit
+    end
   end
 
   # DELETE /contact_messages/1
   # DELETE /contact_messages/1.json
   def destroy
     @contact_message.destroy
+    redirect_to root_url, notice: "Destroyed!"
   end
 
   private

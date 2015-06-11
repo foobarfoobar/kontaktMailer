@@ -1,6 +1,12 @@
 <p id="notice"><%= notice %></p>
 
+<!-- contact_messages_path verlinkt hierher! oder url localhost:3000/contact_messages -->
+
 <h1>Listing Contact Messages</h1>
+
+<!-- <ul> Aufruf des Partials
+	<%= render partial: "contact_messages", collection: @contact_messages %> <!-- rendert Inhalt der Partial _contact_messages-->
+</ul>
 
 <table>
   <thead>
@@ -20,7 +26,8 @@
         <td><%= contact_message.message %></td>
         <td><%= link_to 'Show', contact_message %></td>
         <td><%= link_to 'Edit', edit_contact_message_path(contact_message) %></td>
-        <td><%= link_to 'Destroy', contact_message, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <!-- link_to und delete geht nicht ohne Javascript, deswegen Button nutzen!! -->
+        <td><%= button_to 'Destroy', contact_message, method: :delete %></td>
       </tr>
     <% end %>
   </tbody>
