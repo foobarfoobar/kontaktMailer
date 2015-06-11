@@ -12,7 +12,10 @@ class ContactMailer < ApplicationMailer
     # um es in der Mail darzustellen, add: <%= image_tag attachments['rails.png'].url %> in confirmation.html.erb
     attachments['rails.png'] = File.read("#{Rails.root}/app/assets/images/rails.png")
     # now mail..
-    mail to: email, from: "info@railsbuch.de", subject: "Kontaktnachricht erhalten" 
+    mail to: email, from: "info@railsbuch.de", subject: "Kontaktnachricht erhalten" do |format|
+      format.html { render :layout => 'mailer' } # mailer enthaelt das layout; ab do bis end nicht noetig!
+      format.text
+    end
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -25,6 +28,7 @@ class ContactMailer < ApplicationMailer
     @contact_message = contact_message
     # @greeting = @contact_message.name hier wird anderer Weg genutzt (gesamtes Objectvariable contact_message)
 
-    mail to: "info@railsbuch.de", from: @contact_message.email, subject: "Neue Kontaktanfrage"
+    # and mail; nutzt auch mailer-layout
+    mail to: "info@railsbuch.de", from: @contact_message.email, subject: "Neue Kontaktanfrage" 
   end
 end
