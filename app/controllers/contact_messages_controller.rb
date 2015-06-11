@@ -32,6 +32,11 @@ class ContactMessagesController < ApplicationController
     @contact_message = ContactMessage.new(contact_message_params)
     
     if @contact_message.save
+      # Message konnte erfolgreich gespeichert werden -> sende BestaetigungsMail an Absender, uebergebe mail und name
+      # deliver is deprecated (Rails 5), nutze _now fuer gleich oder _later fuer Active Job.
+      ContactMailer.confirmation(@contact_message.name, @contact_message.email).deliver_now
+      # sende Mail mit Daten an Seitenbetreiber
+      ContactMailer.inquiry(@contact_message).deliver_now
       # zur Startseite weiterleiten: root_url -> muss in routes.rb definiert sein
       redirect_to root_url, notice: 'Thank you for the message'
     else
