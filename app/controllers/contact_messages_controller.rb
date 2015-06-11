@@ -1,9 +1,16 @@
 class ContactMessagesController < ApplicationController
   # keine Authentifizierung fuer new, create
   http_basic_authenticate_with :name => "admin", :password => "geheim", :except => [:new, :create]
-  
+
   # fuellen der Daten in Anzeige
   before_action :set_contact_message, only: [:show, :edit, :update, :destroy]
+
+  # try: (move private to the bottom)
+  # after_create :send_welcome_email
+  # private
+  # def send_welcome_email
+    # UserMailer.registration_confirmation(self).deliver
+  # end
 
   # GET /contact_messages
   # GET /contact_messages.json
@@ -30,7 +37,7 @@ class ContactMessagesController < ApplicationController
   # POST /contact_messages.json
   def create
     @contact_message = ContactMessage.new(contact_message_params)
-    
+
     if @contact_message.save
       # Message konnte erfolgreich gespeichert werden -> sende BestaetigungsMail an Absender, uebergebe mail und name
       # deliver is deprecated (Rails 5), nutze _now fuer gleich oder _later fuer Active Job.
@@ -63,13 +70,14 @@ class ContactMessagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contact_message
-      @contact_message = ContactMessage.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def contact_message_params
-      params.require(:contact_message).permit(:name, :email, :message)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_contact_message
+    @contact_message = ContactMessage.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def contact_message_params
+    params.require(:contact_message).permit(:name, :email, :message)
+  end
 end
