@@ -4,8 +4,8 @@ class ContactMailer < ApplicationMailer
   # with the following lookup:
   #
   #   en.contact_mailer.confirmation.subject
-  # @param name Kundenname
-  # @param email Kundenmail
+  # @param name {String} Kundenname
+  # @param email {String} Kundenmail
    def confirmation(name, email)
     @greeting = name
     # Adding an image as attachment
@@ -23,7 +23,7 @@ class ContactMailer < ApplicationMailer
   #
   #   en.contact_mailer.inquiry.subject
   #
-  # @param contact_message Instanzvariable
+  # @param contact_message {Object} ContactMessage- Object
   def inquiry(contact_message)
     @contact_message = contact_message
     # @greeting = @contact_message.name hier wird anderer Weg genutzt (gesamtes Objectvariable contact_message)
